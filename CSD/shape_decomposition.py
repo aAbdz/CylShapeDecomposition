@@ -49,7 +49,8 @@ def tangent_planes_to_zone_of_interest(cropAx, parametrized_skel,
         theta = pr.angle(utv, np.array([0,0,1]))
         rot_mat = pr.rotation_matrix_3D(rot_axis, theta)
         rotated_plane = np.squeeze(pr.rotate_vector(xyz, rot_mat))        
-        cross_section_plane = rotated_plane+point            
+        cross_section_plane = rotated_plane+point  
+        
         cross_section = interpolating_func(cross_section_plane)
         bw_cross_section = cross_section>=0.5
         bw_cross_section = np.reshape(bw_cross_section, x.shape)
@@ -74,8 +75,8 @@ def tangent_planes_to_zone_of_interest(cropAx, parametrized_skel,
             props = regionprops(bw_cross_section.astype(np.int))            
             y0, x0 = props[0].centroid
     
-            shiftX = np.round((x.shape[0]/2)-x0).astype(np.int)
-            shiftY = np.round((x.shape[1]/2)-y0).astype(np.int)
+            shiftX = np.round(c_mesh-x0).astype(np.int)
+            shiftY = np.round(c_mesh-y0).astype(np.int)
             
             p = max(abs(shiftX), abs(shiftY))
             
@@ -122,7 +123,9 @@ def tangent_planes_to_zone_of_interest(cropAx, parametrized_skel,
             s_inx = s_inx+direction          
         else:
             H_dist = hausdorff_distance(bound, m_curve, len(m_curve))
-            d_ratio = np.true_divide(H_dist, (H_dist+max_radius))                
+            d_ratio = np.true_divide(H_dist, (H_dist+max_radius))     
+
+            #print d_ratio            
                 
             if d_ratio<H_th:
                 m_curve = mean_curve(bound, m_curve, count, c_mesh, 0)
