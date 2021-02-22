@@ -4,7 +4,7 @@ We develop the cylindrical shape decomposition (CSD) algorithm to decompose an o
 
 If you use any part of the cylindrical shape decomposition algorithm in your research, please cite:
 
-A. Abdollahzadeh, A. Sierra, J. Tohka, Cylindrical shape decomposition for 3D segmentation of tubular objects, arXiv:1911.00571v2 [cs.CV] (2019). URL http://arxiv.org/abs/1911.00571.
+Abdollahzadeh, A., Sierra, A. & Tohka, J. Cylindrical Shape Decomposition for 3D Segmentation of Tubular Objects. IEEE Access 9, 23979–23995 (2021).
 
 The outline of the CSD algorithm:
 
