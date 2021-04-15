@@ -10,3 +10,5 @@ The outline of the CSD algorithm:
 
 <img src="figs/outline.png" width="750" height="150" />
 
+
+If you had "RuntimeError: Negative discriminant in time marcher quadratic", you may install an older version of skfmm, e.g., 0.0.8.
