@@ -13,8 +13,12 @@ The outline of the CSD algorithm:
 
 If you had the "RuntimeError: Negative discriminant in time marcher quadratic" error in the skeletonization, you may install an older version of skfmm, e.g., 0.0.8.
 
-
 ## Installation
+The CSD algorithm requires no installation. To install the necessary dependencies, run:
+
+```python
+pip install -r requirements.txt
+```
 Due to the size of datasets, we provided examples as 3d-coordinates and their corresponding bounding box in dict files: 'objSz', 'objVoxInx'.
 
 The mAxon_mError file is an example of an under-segmentation error, where two myelinated axons incorrectly were merged. The bounding box of this 3D object is 2004x1243x180, acquired at 50 nm x 50 nm x 50 nm resolution. To retrieve an object, load the coordinates as:
