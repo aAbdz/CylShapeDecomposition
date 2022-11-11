@@ -90,7 +90,8 @@ def tangent_planes_to_zone_of_interest(cropAx, parametrized_skel,
                 bw_cross_section = bw_cross_section[p:-p, p:-p]
                 
         
-        label_cross_section, nn = label(bw_cross_section, connectivity=1, return_num=True)
+        label_cross_section, nn = label(bw_cross_section, 
+                                        connectivity=1, return_num=True)
         if nn != 1:
             main_lbl = np.unique(label_cross_section[cent_ball])
             main_lbl = main_lbl[np.nonzero(main_lbl)]

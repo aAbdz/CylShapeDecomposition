@@ -351,7 +351,6 @@ def order_branch(branch, junction, order):
 
 
 def unique(mylist):
-    
     unique_list = []
     for x in mylist:
         if x not in unique_list:
@@ -360,7 +359,6 @@ def unique(mylist):
 
 
 def tangent_vector_sum(branch):
-    
     d=np.gradient(branch,axis=0)
     ds=np.sum((d**2),axis=1)**0.5
     ds=np.repeat(np.expand_dims(ds,axis=1),3,axis=1)
