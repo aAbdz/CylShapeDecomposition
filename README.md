@@ -38,8 +38,7 @@ for ii in obj_voxInd: bw[tuple(ii)]=1
 ### Skeletonization
 To skeletonize a 3D voxel-based object, we implemented the method from Hassouna & Farag (CVPR 2005); the method detects ridges in the distance field of the object surface. If you use skeleton3D in your research, please cite:
 
-- A. Abdollahzadeh, A. Sierra, J. Tohka, Cylindrical shape decomposition for 3D segmentation of tubular objects, arXiv:1911.00571v2 [cs.CV] (2019). 
-URL http://arxiv.org/abs/1911.00571.
+- Abdollahzadeh, A., Sierra, A. & Tohka, J. Cylindrical Shape Decomposition for 3D Segmentation of Tubular Objects. IEEE Access 9, 23979–23995 (2021).
 
 The implementation only requires numpy and scikit-fmm
 
