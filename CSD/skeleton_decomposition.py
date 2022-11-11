@@ -16,7 +16,7 @@ def skeleton_main_branch(skel):
     
     graph = form_graph(nodes_coord)
     graph_e = {i: [i*2, i*2+1] for i in range(n_branch)}
-    graph_v = {i: i/2 for i in range(2*n_branch)} 
+    graph_v = {i: i//2 for i in range(2*n_branch)} 
     graph = rearrange_graph(graph, graph_v, graph_e)
     
     dec_junction = [i for i in graph if len(graph[i])>2]   
@@ -273,7 +273,7 @@ def form_graph(end_points):
 def detect_fully_connected_graph(ep_cross_dist):
     
     num_eps = ep_cross_dist.shape[0]
-    junction_eps = np.empty((0,2), dtype=np.int)
+    junction_eps = np.empty((0,2), dtype=np.int32)
     visited = set()
     
     while len(visited) != num_eps:

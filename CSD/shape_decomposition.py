@@ -54,7 +54,7 @@ def tangent_planes_to_zone_of_interest(cropAx, parametrized_skel,
         cross_section = interpolating_func(cross_section_plane)
         bw_cross_section = cross_section>=0.5
         bw_cross_section = np.reshape(bw_cross_section, x.shape)
-        label_cross_section, nn = label(bw_cross_section, neighbors=4, return_num=True)
+        label_cross_section, nn = label(bw_cross_section, connectivity=1, return_num=True)
         main_lbl = np.unique(label_cross_section[cent_ball])
         main_lbl = main_lbl[np.nonzero(main_lbl)]
     
@@ -72,11 +72,11 @@ def tangent_planes_to_zone_of_interest(cropAx, parametrized_skel,
         
         if shift_impose:
             
-            props = regionprops(bw_cross_section.astype(np.int))            
+            props = regionprops(bw_cross_section.astype(np.int64))            
             y0, x0 = props[0].centroid
     
-            shiftX = np.round(c_mesh-x0).astype(np.int)
-            shiftY = np.round(c_mesh-y0).astype(np.int)
+            shiftX = np.round(c_mesh-x0).astype(np.int64)
+            shiftY = np.round(c_mesh-y0).astype(np.int64)
             
             p = max(abs(shiftX), abs(shiftY))
             
@@ -90,7 +90,7 @@ def tangent_planes_to_zone_of_interest(cropAx, parametrized_skel,
                 bw_cross_section = bw_cross_section[p:-p, p:-p]
                 
         
-        label_cross_section, nn = label(bw_cross_section, neighbors=4, return_num=True)
+        label_cross_section, nn = label(bw_cross_section, connectivity=1, return_num=True)
         if nn != 1:
             main_lbl = np.unique(label_cross_section[cent_ball])
             main_lbl = main_lbl[np.nonzero(main_lbl)]
@@ -282,7 +282,7 @@ def obj_ends_conditions(dist2junc):
 def maximal_inner_sphere(cropAx, parametrized_skel, junction_coordinate, rect):
     
     mean_junction_coordinate = np.mean(junction_coordinate, axis=0)
-    f_jc = tuple(np.floor(mean_junction_coordinate).astype(np.int))
+    f_jc = tuple(np.floor(mean_junction_coordinate).astype(np.int64))
 
     if cropAx[f_jc] != 1:
         
@@ -293,12 +293,12 @@ def maximal_inner_sphere(cropAx, parametrized_skel, junction_coordinate, rect):
 
         for i in range(l):
             f_jc = parametrized_skel[min_dist_inx+i]            
-            f_jc = tuple(np.floor(f_jc).astype(np.int))                     
+            f_jc = tuple(np.floor(f_jc).astype(np.int64))                     
             if cropAx[f_jc] == 1:
                 break
             else:
                 f_jc = parametrized_skel[min_dist_inx-i] 
-                f_jc = tuple(np.floor(f_jc).astype(np.int))
+                f_jc = tuple(np.floor(f_jc).astype(np.int64))
                 if cropAx[f_jc] == 1:
                     break
 
@@ -321,7 +321,7 @@ def corresponding_skel(im,final_skeleton,main_branches):
     
     c_skel=[]   
     for i in main_branches:
-        main_branch=np.floor(final_skeleton[i]).astype(np.int)
+        main_branch=np.floor(final_skeleton[i]).astype(np.int64)
         count=0
         for coord in main_branch:
             if im[tuple(coord)]==1:
@@ -335,7 +335,7 @@ def detect_main_obj(obj, corrected_skeleton):
     
     count = 0
     flag = False
-    f_skel = np.floor(corrected_skeleton).astype(np.int)
+    f_skel = np.floor(corrected_skeleton).astype(np.int64)
     f_skel = np.unique(f_skel, axis=0)
     for point in f_skel:
         if obj[tuple(point)]:
@@ -449,7 +449,7 @@ def object_decomposition(obj, interpolated_skel, filled_cs, g_radius=15, g_res=0
         
         cs = np.ravel(filled_cs[i])
         
-        discrete_coordinates = np.round(cross_section_plane).astype(np.int)
+        discrete_coordinates = np.round(cross_section_plane).astype(np.int64)
         for ii in range(len(discrete_coordinates)):
             inx = discrete_coordinates[ii]
             if np.all(inx>=0) and np.all(inx<=np.array(sz)-1):
@@ -462,7 +462,7 @@ def object_decomposition(obj, interpolated_skel, filled_cs, g_radius=15, g_res=0
 
 def filling_cross_sections(st_cross_sections, g_radius, g_res):
     
-    ep = np.array(2*g_radius/g_res, dtype=np.int)
+    ep = np.array(2*g_radius/g_res, dtype=np.int64)
     x, y = np.mgrid[0:ep, 0:ep]    
     filled_cs = []
     for cs in st_cross_sections:
@@ -493,13 +493,13 @@ def junction_correction(cropAx, parametrized_skel, main_junction_coordinates,
     c_mesh = (2*g_radius)/(2*g_res)
     
     if len(bound1) == 0:
-        curve1 = c_mesh * np.ones((c_mesh,2), dtype=np.int)
+        curve1 = c_mesh * np.ones((c_mesh,2), dtype=np.int64)
     else:
         curve1 = polar_parametrization(bound1, c_mesh)
         curve1 = polar_interpolation(curve1, c_mesh)
     
     if len(bound2) == 0:
-        curve2 = c_mesh * np.ones((c_mesh,2), dtype=np.int)
+        curve2 = c_mesh * np.ones((c_mesh,2), dtype=np.int64)
     else:    
         curve2 = polar_parametrization(bound2, c_mesh)  
         curve2 = polar_interpolation(curve2, c_mesh)
@@ -508,7 +508,7 @@ def junction_correction(cropAx, parametrized_skel, main_junction_coordinates,
         curve1 = curve1 - np.array([shiftY1, shiftX1])
         curve2 = curve2 - np.array([shiftY2, shiftX2])
         
-    num_steps = np.floor(np.sqrt(np.sum((point2-point1)**2)) / Euler_step_size).astype(np.int)
+    num_steps = np.floor(np.sqrt(np.sum((point2-point1)**2)) / Euler_step_size).astype(np.int64)
     st_cross_sections = interpolated_super_tube(curve1, curve2, num_steps)
     interpolated_skel = interpolated_super_tube(point1, point2, num_steps)
         
@@ -532,7 +532,6 @@ def object_analysis(obj, skel):
         
         rec_obj = obj.copy()
         for junction_coordinate in junction_coordinates:
-            
             st_cross_sections, interpolated_skel, sub_skeleton = junction_correction(rec_obj, sub_skeleton, junction_coordinate, 
                                                                    g_radius=15, g_res=0.25, H_th=0.7, shift_impose=1, Euler_step_size=0.5)
             
@@ -541,10 +540,10 @@ def object_analysis(obj, skel):
             filled_cs = filling_cross_sections(st_cross_sections, g_radius=15, g_res=0.25)                
             rec_obj = object_decomposition(rec_obj, interpolated_skel, filled_cs, g_radius=15, g_res=0.25)
         
-            labeled_obj = label(rec_obj, neighbors=4)
+            labeled_obj = label(rec_obj, connectivity=1)
             for region in regionprops(labeled_obj):
                 if region.area>=len(sub_skeleton):                    
-                    dec_obj = np.zeros(labeled_obj.shape, dtype=np.bool)
+                    dec_obj = np.zeros(labeled_obj.shape, dtype=bool)
                     for coordinates in region.coords:
                         dec_obj[coordinates[0], coordinates[1], coordinates[2]] = True
                     
